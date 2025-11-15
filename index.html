@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ASMO Round 2 – Math Test</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+        background: #f5f5f5;
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .question {
+        margin-bottom: 20px;
+        padding: 10px;
+        background: #eef;
+        border-radius: 6px;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+    #timer {
+        font-size: 24px;
+        color: red;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    #results {
+        font-size: 20px;
+        background: #dfffd8;
+        padding: 15px;
+        border-radius: 6px;
+        display: none;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        background: #3f7cff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>ASMO Round 2 – Math Test</h1>
+<p>You have <b>60 minutes</b>. The timer will auto-submit when time is up.</p>
+
+<div id="timer">01:00:00</div>
+
+<form id="testForm">
+
+<div class="question">
+    <b>1) 6 writers can write 2 books in 8 days.  
+    If only 2 writers want to finish 3 books in 6 days,  
+    how many additional writers are required?</b>
+    <input type="text" id="q1">
+</div>
+
+<div class="question">
+    <b>2) Draw 2024 straight lines on a plane.  
+    What is the maximum number of regions created?</b>
+    <input type="text" id="q2">
+</div>
+
+<!-- You can add more ASMO questions here -->
+<!-- Example:
+<div class="question">
+    <b>3) Your question here</b>
+    <input type="text" id="q3">
+</div>
+-->
+
+</form>
+
+<button onclick="submitTest()">Submit</button>
+
+<div id="results"></div>
+
+</div>
+
+<script>
+// ------------------- TIMER (1 hour = 3600 sec) -------------------
+let timeLeft = 3600;
+let timer = setInterval(() => {
+    timeLeft--;
+    let h = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
+    let m = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
+    let s = String(timeLeft % 60).padStart(2, '0');
+    document.getElementById("timer").textContent = `${h}:${m}:${s}`;
+
+    if (timeLeft <= 0) {
+        clearInterval(timer);
+        submitTest();
+    }
+}, 1000);
+
+
+// ------------------- ANSWER KEY -------------------
+let answers = {
+    q1: "7",        // correct answer
+    q2: "2049126"   // formula: n(n+1)/2 + 1 for n=2024
+};
+
+
+// ------------------- SUBMISSION -------------------
+function submitTest() {
+    clearInterval(timer);
+
+    let score = 0;
+    let total = Object.keys(answers).length;
+
+    for (let id in answers) {
+        let userAns = document.getElementById(id).value.trim();
+        if (userAns === answers[id]) score++;
+    }
+
+    document.getElementById("results").style.display = "block";
+    document.getElementById("results").innerHTML =
+        `You scored <b>${score} / ${total}</b>.`;
+
+    window.scrollTo(0, 0); // move user to the top
+}
+</script>
+
+</body>
+</html>
